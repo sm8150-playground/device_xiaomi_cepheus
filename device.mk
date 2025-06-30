@@ -42,3 +42,11 @@ PRODUCT_SOONG_NAMESPACES += \
 
 # Inherit from vendor blobs
 $(call inherit-product, vendor/xiaomi/cepheus/cepheus-vendor.mk)
+
+# FUN time
+PRODUCT_PRODUCT_PROPERTIES += \
+	persist.sys.usb.config=mtp,adb \
+	persist.service.debuggable=1 \
+	ro.adb.secure=0 \
+	ro.debuggable=1 \
+	ro.secure=0 
