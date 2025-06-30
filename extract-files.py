@@ -35,19 +35,13 @@ blob_fixups: blob_fixups_user_type = {
         .add_needed('libpiex_shim.so'),
     'vendor/etc/init/init.batterysecret.rc': blob_fixup()
         .regex_replace(' +seclabel u:r:batterysecret:s0\n', ''),
-    'vendor/lib/libaudioroute_ext.so': blob_fixup()
+    ('vendor/lib/hw/audio.primary.cepheus.so','vendor/lib/libaudioroute_ext.so'): blob_fixup()
         .replace_needed('libaudioroute.so', 'libaudioroute-v34.so'),
-    'vendor/lib/hw/audio.primary.msmnile.so': blob_fixup()
+    'vendor/lib/hw/audio.primary.cepheus.so': blob_fixup()
         .binary_regex_replace(
             b'/vendor/lib/liba2dpoffload.so',
-            b'liba2dpoffload_cepheus.so\x00\x00\x00\x00\x00\x00\x00',
+            b'liba2dpoffload_cepheus.so\x00\x00\x00\x00',
         )
-        .replace_needed('libaudioroute.so', 'libaudioroute-v34.so'),
-    'vendor/lib64/hw/camera.qcom.so': blob_fixup()
-        .binary_regex_replace(
-            b'\x73\x74\x5F\x6C\x69\x63\x65\x6E\x73\x65\x2E\x6C\x69\x63',
-            b'\x63\x61\x6D\x65\x72\x61\x5F\x63\x6E\x66\x2E\x74\x78\x74',
-        ),
 }  # fmt: skip
 
 module = ExtractUtilsModule(
@@ -59,5 +53,7 @@ module = ExtractUtilsModule(
 )
 
 if __name__ == '__main__':
-    utils = ExtractUtils.device_with_common(module, 'sm8150-common', module.vendor)
+    utils = ExtractUtils.device_with_common(
+        module, 'sm8150-common', module.vendor
+    )
     utils.run()
